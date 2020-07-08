@@ -22,5 +22,7 @@ namespace MagicOnionExperiment.ServiceDefinitions
 
 		// 独自型を送信
 		UnaryResult<Nil> Sample(Vector2 point);
+		// Metadataを送る
+		UnaryResult<Nil> SampleWithMetadata();
 	}
 }

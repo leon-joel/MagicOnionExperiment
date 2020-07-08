@@ -110,5 +110,20 @@ namespace MagicOnionServer
 				return this.ReturnStatusCode<Nil>((int)StatusCode.Internal, ex.Message);
 			}
 		}
+
+		// Metadataを受け取り
+		public async UnaryResult<Nil> SampleWithMetadata()
+		{
+			//--- ヘッダーから値を取り出す
+			var header = this.Context.CallContext.RequestHeaders;
+			var value1 = header.Get("Key").Value;
+			var value2 = header.Get("Key-bin").ValueBytes;
+
+			Console.WriteLine("[SampleWithMetadata]");
+			Console.WriteLine(value1);
+			Console.WriteLine($"{{{value2[0]}, {value2[1]}}}");
+
+			return Nil.Default;
+		}
 	}
 }

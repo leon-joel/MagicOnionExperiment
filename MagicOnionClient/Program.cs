@@ -101,6 +101,19 @@ namespace MagicOnionExperiment.Client
 					// Status(StatusCode = Unknown, Detail = "Exception was thrown by handler.")
 					Console.WriteLine($"独自型送信結果4: エラー: {status}");
 				}
+
+				// ■ヘッダーにデータを詰め込む
+				// ※string, byte[] を格納できる
+				// ※byte[] を格納する場合はキー名に "-bin" を付けること
+				var metadata = new Metadata() {
+					new Metadata.Entry("Key", "Value" ),
+					new Metadata.Entry("Key-bin", new byte[]{1, 2}),
+				};
+				//var clientWithMetadata = MagicOnionClient.Create<ISampleApi>(channel).WithHeaders(metadata);
+				//var resWithMetadata = await clientWithMetadata.SampleWithMetadata();
+				// ↑でもいいけど、新しくclientを作らなくても大丈夫↓
+				var resWithMetadata = await client.WithHeaders(metadata).SampleWithMetadata();
+				Console.WriteLine($"メタデータ結果: 正常: {resWithMetadata.GetType().FullName}");
 			}
 
 			// BitmapImageの送信
