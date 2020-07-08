@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MagicOnionExperiment.ServiceDefinitions</AssemblyName>
+    <RootNamespace>MagicOnionExperiment.ServiceDefinitions</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MagicOnion" Version="3.0.13" />
+  </ItemGroup>
+
+</Project>
