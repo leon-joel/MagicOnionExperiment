@@ -87,6 +87,20 @@ namespace MagicOnionExperiment.Client
 				} catch (Grpc.Core.RpcException ex) {
 					Console.WriteLine(ex.Message);
 				}
+
+				// サーバー側で予期せぬエラーが発生したら… ⇒ StatusCode.Unknown が返される
+				call = client.Sample(new Vector2(int.MinValue, 2));
+				header = await call.ResponseHeadersAsync;
+				status = call.GetStatus();
+
+				if (status.StatusCode == StatusCode.OK) {
+					// OKだったら結果を受け取る
+					var resVec2 = await call.ResponseAsync;
+					Console.WriteLine($"独自型送信結果4: 正常: {resVec}");
+				} else {
+					// Status(StatusCode = Unknown, Detail = "Exception was thrown by handler.")
+					Console.WriteLine($"独自型送信結果4: エラー: {status}");
+				}
 			}
 
 			// BitmapImageの送信

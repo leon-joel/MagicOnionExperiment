@@ -94,6 +94,10 @@ namespace MagicOnionServer
 		public async UnaryResult<Nil> Sample(Vector2 point)
 		{
 			try {
+				// 予期せぬエラーをthrowしてみる
+				if (point.X == int.MinValue || point.X == int.MaxValue || point.Y == int.MinValue || point.Y == int.MaxValue)
+					throw new ArgumentException("point");
+
 				// ステータスコード ＋ エラー詳細を返すことも出来る
 				if (point.X < 0 || point.Y < 0)
 					throw new ArgumentOutOfRangeException($"X/Y must be 0 or more integer. (x,y)=({point.X}, {point.Y})");
@@ -101,8 +105,8 @@ namespace MagicOnionServer
 				Console.WriteLine($"Sample: (x, y) = ({point.X}, {point.Y})");
 				return Nil.Default;  //--- 独自型を返せます
 
-			} catch (Exception ex) {
-				//--- 異常系ではステータスコード + エラー詳細を返す
+			} catch (ArgumentOutOfRangeException ex) {
+				// 予期しているエラーをcatchした場合、ステータスコード + エラー詳細を返す
 				return this.ReturnStatusCode<Nil>((int)StatusCode.Internal, ex.Message);
 			}
 		}
