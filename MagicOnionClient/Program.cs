@@ -17,7 +17,10 @@ namespace MagicOnionExperiment.Client
 		static async Task MainAsync()
 		{
 			//--- API が公開されている IP / Port / 認証情報を設定して通信路を生成
-			var channel = new Channel("localhost", 12345, ChannelCredentials.Insecure);
+			var channel = new Channel("localhost", 12345, ChannelCredentials.Insecure, new[]{
+				new ChannelOption(ChannelOptions.MaxReceiveMessageLength, int.MaxValue),
+				new ChannelOption(ChannelOptions.MaxSendMessageLength, int.MaxValue),
+			});
 
 			//--- 指定されたサービス定義用のクライアントを作成
 			var client = MagicOnionClient.Create<ISampleApi>(channel);
@@ -64,7 +67,7 @@ namespace MagicOnionExperiment.Client
 
 				// ■独自型の送信
 				var point = new Vector2(3, 5);
-				var resVec = await client.Sample(point);	// Nilが返ってくる
+				var resVec = await client.Sample(point);    // Nilが返ってくる
 				Console.WriteLine($"独自型送信結果1: {resVec.GetType().FullName}");
 
 				// ■ステータスコードの取得
@@ -116,26 +119,48 @@ namespace MagicOnionExperiment.Client
 				Console.WriteLine($"メタデータ結果: 正常: {resWithMetadata.GetType().FullName}");
 			}
 
-			// BitmapImageの送信
-			// Create source.
-			BitmapImage bi = new BitmapImage();
-			// BitmapImage.UriSource must be in a BeginInit/EndInit block.
-			bi.BeginInit();
-			bi.UriSource = new Uri(@"resources/image.axd.jpg", UriKind.RelativeOrAbsolute);
-			bi.EndInit();
-			bi.Freeze();
+			// byte[]の送信
+			BitmapImage bi = LoadImageFile(@"resources/image.axd.jpg");
+			byte[] bytes = ExtractByteArray(bi);
+			var frame = new FrameImage(bi.PixelWidth, bi.PixelHeight, bytes);
+			var (min, max, ave) = await imageClient.SendImage(frame);
+			Console.WriteLine($"Frame送信結果: bytes={bytes.Length},  Min={min}, Max={max}, Ave={ave}");
 
+			// 巨大なbyte[]の送信
+			try {
+				bi = LoadImageFile(@"resources/jem_40mb.tif");
+				bytes = ExtractByteArray(bi);
+				frame = new FrameImage(bi.PixelWidth, bi.PixelHeight, bytes);
+				(min, max, ave) = await imageClient.SendImage(frame);
+				Console.WriteLine($"Frame送信結果: bytes={bytes.Length},  Min={min}, Max={max}, Ave={ave}");
+			}catch (RpcException ex) {
+				// デフォルトでは4MBを越えるとエラーになる
+				Console.WriteLine(ex.Message);
+			}
+
+
+			Console.ReadLine();
+		}
+
+		private static byte[] ExtractByteArray(BitmapImage bi)
+		{
 			int width = bi.PixelWidth;
 			int height = bi.PixelHeight;
 			int stride = (width * bi.Format.BitsPerPixel + 7) / 8;
 			byte[] bytes = new byte[stride * height];
 			bi.CopyPixels(bytes, stride, 0);
+			return bytes;
+		}
 
-			var frame = new FrameImage(bi.PixelWidth, bi.PixelHeight, bytes);
-			var (min, max, ave) = await imageClient.SendImage(frame);
-			Console.WriteLine($"Frame送信結果: Min={min}, Max={max}, Ave={ave}");
-			
-			Console.ReadLine();
+		private static BitmapImage LoadImageFile(string filePath)
+		{
+			BitmapImage bi = new BitmapImage();
+			// BitmapImage.UriSource must be in a BeginInit/EndInit block.
+			bi.BeginInit();
+			bi.UriSource = new Uri(filePath, UriKind.RelativeOrAbsolute);
+			bi.EndInit();
+			bi.Freeze();
+			return bi;
 		}
 	}
 }

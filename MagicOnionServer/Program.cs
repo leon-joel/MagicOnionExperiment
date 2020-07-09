@@ -15,7 +15,13 @@ namespace MagicOnionServer
 
 			//--- API を公開する IP / Port / 認証情報などを決定し、gRPC サーバーを起動
 			var port = new ServerPort("localhost", 12345, ServerCredentials.Insecure);
-			var server = new Server { Services = { service }, Ports = { port } };
+			var server = new Server(new[] {
+				new ChannelOption(ChannelOptions.MaxReceiveMessageLength, int.MaxValue),
+				new ChannelOption(ChannelOptions.MaxSendMessageLength, int.MaxValue),
+			}) {
+				Services = { service },
+				Ports = { port },
+			};
 			server.Start();
 
 			//--- exe が終了しちゃわないように
