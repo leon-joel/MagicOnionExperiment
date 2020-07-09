@@ -13,7 +13,7 @@ namespace MagicOnionServer
 		// min, max, ave を返す
 		public async UnaryResult<(int, int, double)> SendImage(FrameImage image)
 		{
-			Console.WriteLine($"[FrameImage] (w, h) = ({image.Width}, {image.Height})");
+			Logger.Debug($"[FrameImage] (w, h) = ({image.Width}, {image.Height})");
 
 			int max = int.MinValue;
 			int min = int.MaxValue;

@@ -1,5 +1,6 @@
 ﻿using System;
 using Grpc.Core;
+using Grpc.Core.Logging;
 using MagicOnion.Server;
 
 namespace MagicOnionServer
@@ -8,7 +9,10 @@ namespace MagicOnionServer
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Server startup!");
+			// GrpcのLogging機構を使う
+			GrpcEnvironment.SetLogger(new ConsoleLogger());
+
+			GrpcEnvironment.Logger.Info("Server startup! =================================");
 
 			//--- ここで動的にアセンブリを解釈し、通信されてきたデータと API 本体とのマップを作る
 			var service = MagicOnionEngine.BuildServerServiceDefinition();
@@ -24,8 +28,12 @@ namespace MagicOnionServer
 			};
 			server.Start();
 
+			GrpcEnvironment.Logger.Info("Server started");
+
 			//--- exe が終了しちゃわないように
 			Console.ReadLine();
+
+			GrpcEnvironment.Logger.Info("Server closed. ---------------------------------");
 		}
 	}
 }

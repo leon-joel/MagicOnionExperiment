@@ -19,7 +19,7 @@ namespace MagicOnionServer
 		//--- async/await をそのまま書ける
 		public async UnaryResult<int> Sum(int x, int y)
 		{
-			Console.WriteLine($"(x, y) = ({x}, {y})");
+			Logger.Debug($"(x, y) = ({x}, {y})");
 			await Task.Delay(10);  // 何か非同期処理したり
 			return x + y;
 		}
@@ -38,7 +38,7 @@ namespace MagicOnionServer
 		// Server Streaming
 		public async Task<ServerStreamingResult<int>> Repeat(int value, int count)
 		{
-			Console.WriteLine($"(value, count) = ({value}, {count})");
+			Logger.Debug($"(value, count) = ({value}, {count})");
 
 			// --- WriteAsyncするたびにレスポンスが返る
 			var streaming = this.GetServerStreamingContext<int>();
@@ -58,7 +58,7 @@ namespace MagicOnionServer
 			var streaming = this.GetClientStreamingContext<int, int>();
 			var sum = 0;
 			await streaming.ForEachAsync(x => {
-				Console.WriteLine($"Received = {x}");
+				Logger.Debug($"Received = {x}");
 				sum += x;
 			});
 
@@ -72,7 +72,7 @@ namespace MagicOnionServer
 			var streaming = this.GetDuplexStreamingContext<int, int>();
 			var task = streaming.ForEachAsync(async x => {
 				//--- クライアントから送信された値が偶数だったら 2 倍にして返してみたり
-				Console.WriteLine($"[Dup] Received : {x}");
+				Logger.Debug($"[Dup] Received : {x}");
 				if (x % 2 == 0)
 					await streaming.WriteAsync(x * 2);
 			});
@@ -102,7 +102,7 @@ namespace MagicOnionServer
 				if (point.X < 0 || point.Y < 0)
 					throw new ArgumentOutOfRangeException($"X/Y must be 0 or more integer. (x,y)=({point.X}, {point.Y})");
 
-				Console.WriteLine($"Sample: (x, y) = ({point.X}, {point.Y})");
+				Logger.Debug($"Sample: (x, y) = ({point.X}, {point.Y})");
 				return Nil.Default;  //--- 独自型を返せます
 
 			} catch (ArgumentOutOfRangeException ex) {
@@ -119,9 +119,9 @@ namespace MagicOnionServer
 			var value1 = header.Get("Key").Value;
 			var value2 = header.Get("Key-bin").ValueBytes;
 
-			Console.WriteLine("[SampleWithMetadata]");
-			Console.WriteLine(value1);
-			Console.WriteLine($"{{{value2[0]}, {value2[1]}}}");
+			Logger.Debug("[SampleWithMetadata]");
+			Logger.Debug(value1);
+			Logger.Debug($"{{{value2[0]}, {value2[1]}}}");
 
 			return Nil.Default;
 		}
