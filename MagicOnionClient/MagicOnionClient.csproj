@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -12,8 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServiceDefinitionsCore\ServiceDefinitionsCore.csproj" />
-    <ProjectReference Include="..\ServiceDefinitions\ServiceDefinitions.csproj" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceDefinitions\ImageService\ImageServiceDefinitions.csproj" />
+    <ProjectReference Include="..\ServiceDefinitions\SampleApi\SampleApiDefinitions.csproj" />
+    <ProjectReference Include="..\ServiceDefinitions\ServiceWithConnectionID\ServiceWithConnectionID.csproj" />
   </ItemGroup>
 
   <ItemGroup>

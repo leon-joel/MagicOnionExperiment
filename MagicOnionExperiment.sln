@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceDefinitions", "ServiceDefinitions\ServiceDefinitions.csproj", "{62C371AE-2CF6-4391-B0CB-EC7924F9D18F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicOnionServer", "MagicOnionServer\MagicOnionServer.csproj", "{DF4DF65B-C347-416C-BE9D-7CD5190C38BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicOnionClient", "MagicOnionClient\MagicOnionClient.csproj", "{E9F09B42-6401-43B7-BB00-FB041C634969}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDefinitionsCore", "ServiceDefinitionsCore\ServiceDefinitionsCore.csproj", "{DC5D2949-0BCC-42A6-B6F2-08EEFBF36F5A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceDefinitions", "ServiceDefinitions", "{DF732F02-5408-4E6B-8612-01F2A49FBAA8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageServiceDefinitions", "ServiceDefinitions\ImageService\ImageServiceDefinitions.csproj", "{7A332A47-138A-4763-8F2A-0219E94F0FBB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApiDefinitions", "ServiceDefinitions\SampleApi\SampleApiDefinitions.csproj", "{F4656802-B6F5-4BC5-B872-563916FF0103}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceWithConnectionID", "ServiceDefinitions\ServiceWithConnectionID\ServiceWithConnectionID.csproj", "{4F75275A-ED53-4FD6-B4EA-ED7E9A6052B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{62C371AE-2CF6-4391-B0CB-EC7924F9D18F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62C371AE-2CF6-4391-B0CB-EC7924F9D18F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62C371AE-2CF6-4391-B0CB-EC7924F9D18F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62C371AE-2CF6-4391-B0CB-EC7924F9D18F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF4DF65B-C347-416C-BE9D-7CD5190C38BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF4DF65B-C347-416C-BE9D-7CD5190C38BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF4DF65B-C347-416C-BE9D-7CD5190C38BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,13 +29,26 @@ Global
 		{E9F09B42-6401-43B7-BB00-FB041C634969}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9F09B42-6401-43B7-BB00-FB041C634969}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9F09B42-6401-43B7-BB00-FB041C634969}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC5D2949-0BCC-42A6-B6F2-08EEFBF36F5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC5D2949-0BCC-42A6-B6F2-08EEFBF36F5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC5D2949-0BCC-42A6-B6F2-08EEFBF36F5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC5D2949-0BCC-42A6-B6F2-08EEFBF36F5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A332A47-138A-4763-8F2A-0219E94F0FBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A332A47-138A-4763-8F2A-0219E94F0FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A332A47-138A-4763-8F2A-0219E94F0FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A332A47-138A-4763-8F2A-0219E94F0FBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4656802-B6F5-4BC5-B872-563916FF0103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4656802-B6F5-4BC5-B872-563916FF0103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4656802-B6F5-4BC5-B872-563916FF0103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4656802-B6F5-4BC5-B872-563916FF0103}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F75275A-ED53-4FD6-B4EA-ED7E9A6052B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F75275A-ED53-4FD6-B4EA-ED7E9A6052B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F75275A-ED53-4FD6-B4EA-ED7E9A6052B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F75275A-ED53-4FD6-B4EA-ED7E9A6052B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7A332A47-138A-4763-8F2A-0219E94F0FBB} = {DF732F02-5408-4E6B-8612-01F2A49FBAA8}
+		{F4656802-B6F5-4BC5-B872-563916FF0103} = {DF732F02-5408-4E6B-8612-01F2A49FBAA8}
+		{4F75275A-ED53-4FD6-B4EA-ED7E9A6052B9} = {DF732F02-5408-4E6B-8612-01F2A49FBAA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6E3BAEB7-7DA4-4788-91E1-2997F723DF83}

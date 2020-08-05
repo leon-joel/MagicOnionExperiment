@@ -12,6 +12,8 @@ namespace MagicOnionExperiment.Client
 {
 	class Program
 	{
+		public static int IConnectionIDService { get; private set; }
+
 		static void Main() => MainAsync().Wait();
 
 		static async Task MainAsync()
@@ -138,6 +140,21 @@ namespace MagicOnionExperiment.Client
 				Console.WriteLine(ex.Message);
 			}
 
+			// ■ユーザー固有IDの送信
+			// ★2020/08/05現在(MagicOnion3.0.13では) ChannelContext というクラスが存在しない！廃止された？！
+			//--- ChannelContext でチャンネルとユーザー固有の ID をラップ
+			//var connectionId = "なにかしらユーザー固有のID";
+			//var context = new ChannelContext(channel, () => connectionId);
+			//await context.WaitConnectComplete();  // 接続待ち
+			//var client = context.CreateClient<ISampleApi>();
+			//var result = await client.Sample();
+			// ★仕方ないので、自前でヘッダーに仕込んで送るようにする
+			var meta = new Metadata() {
+				new Metadata.Entry("ConnectionId_ja", "なにかのID文字列"),
+				new Metadata.Entry("ConnectionId", "some id string"),
+			};
+			var connectionIDClient = MagicOnionClient.Create<IConnectionIDService>(channel).WithHeaders(meta);
+			var res = await connectionIDClient.SendConnectionID();
 
 			Console.ReadLine();
 		}
