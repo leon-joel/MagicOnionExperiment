@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using Grpc.Core;
 using MagicOnion;
@@ -156,6 +157,13 @@ namespace MagicOnionExperiment.Client
 			var connectionIDClient = MagicOnionClient.Create<IConnectionIDService>(channel).WithHeaders(meta);
 			var res = await connectionIDClient.SendConnectionID();
 
+			// ■ゲームサーバーへの接続 （部屋への登録/解除、サーバーからのpush通知受け取り）
+			GamingHubClient gamingHub = new GamingHubClient();
+			string name = $"p{System.Diagnostics.Process.GetCurrentProcess().Id}";
+			var gameObject = await gamingHub.ConnectAsync(channel, "room1", name);
+			Console.ReadLine();
+
+			await gamingHub.LeaveAsync();
 			Console.ReadLine();
 		}
 
